@@ -1,3 +1,5 @@
+[![golangci-lint](https://github.com/KEINOS/go-getkeypushed/actions/workflows/golangci-lint.yaml/badge.svg)](https://github.com/KEINOS/go-getkeypushed/actions/workflows/golangci-lint.yaml)
+
 # Go-GetKeyPushed
 
 **It simply gets one character of the key pushed** from the console (TTY) without entering the `enter` key. Some what like `OnKeyPress()` functionality.
