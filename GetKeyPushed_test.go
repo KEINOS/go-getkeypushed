@@ -22,7 +22,7 @@ func TestGetKeyPushed_DummyMsg(t *testing.T) {
 }
 
 func TestGetKeyPushed_DummyErr(t *testing.T) {
-	expect := "dummy error occured"
+	expect := "dummy error occurred"
 
 	errDummy := errors.New(expect)
 

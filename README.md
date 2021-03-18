@@ -82,7 +82,7 @@ If you set an `error` to `gkp.DummyErr` then `gkp.GetKeyPushed()` will return th
 
 ```go
 func TestGetKeyPushed_DummyErr(t *testing.T) {
-    expect := "dummy error occured"
+    expect := "dummy error occurred"
 
     errDummy := errors.New(expect)
 
