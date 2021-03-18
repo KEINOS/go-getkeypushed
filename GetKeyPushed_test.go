@@ -45,5 +45,5 @@ func TestGetKeyPushed_DummyErr(t *testing.T) {
 		"When DummyErr global variable is not a nil then GetKeyPushed() should return an error.",
 	)
 
-	assert.EqualErrorf(t, err, expect, "error message %s", "formatted")
+	assert.EqualErrorf(t, err, expect, "error message %s", "mal-formatted")
 }
