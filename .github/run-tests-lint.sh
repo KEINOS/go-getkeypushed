@@ -25,11 +25,15 @@ cd "${PATH_DIR_PARENT}" || {
     exit $FAILURE
 }
 
+go mod tidy
+
 echo "${@}" | grep -e "-l" -e "--linters" >/dev/null && {
+    echo "List of enabled linters:"
     golangci-lint linters --config "$PATH_FILE_CONF_GOLANGCILINT" ./...
     exit $?
 }
 
+echo 'Running golangci-lint ...'
 if ! golangci-lint run --config "$PATH_FILE_CONF_GOLANGCILINT" ./...; then
     echo >&2
     echo >&2 'References for debugging lint error:'
