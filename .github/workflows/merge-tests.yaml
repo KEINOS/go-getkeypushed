@@ -49,8 +49,13 @@ jobs:
           args: --config ./.github/golangci.yml
           skip-go-installation: true # use pre-installed Go
 
-      - name: Run requirement check and lint check
+      - name: Run requirement checker
         run: |
           curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin
           ./.github/check-requirements.sh
-          ./.github/run-tests-lint.sh
+
+      - name: Run lint check
+        run: ./.github/run-tests-lint.sh
+
+      - name: Run simple test (no coverage)
+        run: go test .
