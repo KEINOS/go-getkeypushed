@@ -111,4 +111,4 @@ func TestGetKeyPushed_DummyErr(t *testing.T) {
 ## TODO
 
 - [ ] Find out how to test the `tty` input
-- [ ] Implement testing
+- [x] Implement testing
