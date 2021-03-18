@@ -1,3 +1,5 @@
+name: Update documentation
+
 on:
   workflow_dispatch:
   release:
