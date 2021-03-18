@@ -3,6 +3,7 @@ name: golangci-lint
 
 on:
   workflow_dispatch:
+  push:
 
 jobs:
   golangci:
