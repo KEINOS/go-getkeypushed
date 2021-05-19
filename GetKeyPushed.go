@@ -1,40 +1,44 @@
 package gkp
 
 import (
-	"github.com/mattn/go-tty"
+	"errors"
+	"os"
 )
 
 var (
-	// DummyMsg is a string that GetKeyPushed() returns if set. Use this for testing.
-	DummyMsg string = ""
+	// DummyKey is a string that GetKeyPushed() returns if set. Use this for testing.
+	DummyKey string = ""
 	// DummyErr is an error message that GetKeyPushed() returns if set. Use this for testing.
 	DummyErr error = nil
+	// UserInput is a string that GetKeyPushed() returns if set. Use this for testing.
+	// It will override the user input.
+	UserInput string = ""
+	// OsExit is a copy of os.Exit to ease mock the application exit.
+	OsExit func(code int) = os.Exit
 )
 
 // GetKeyPushed returns the single key pressed by the user via tty(terminal).
+//
 // It is useful to get the user input without entering `enter` key.
-func GetKeyPushed() (string, error) {
-	// Return dummy if set. It will be used to ease tesing at the other
-	// packages that uses this pakage.
-	if DummyMsg != "" || DummyErr != nil {
-		return DummyMsg, DummyErr
+func GetKeyPushed(keyDefault string, timeWait int) (keyPushed string, err error) {
+	// Return the dummy value if set.
+	// It will be used to ease tesing at the other packages that uses this pakage.
+	if DummyKey != "" || DummyErr != nil {
+		return DummyKey, DummyErr
 	}
 
-	var (
-		t   *tty.TTY
-		r   rune
-		err error
-	)
-
-	if t, err = tty.Open(); err != nil {
-		return "", err
+	if !IsTTY() {
+		return "", errors.New("not a TTY")
 	}
 
-	defer t.Close()
+	timer := startTimer(timeWait)
+	defer timer.Stop()
 
-	if r, err = t.ReadRune(); err != nil {
-		return "", err
+	if timeWait == 0 {
+		if !timer.Stop() {
+			<-timer.C
+		}
 	}
 
-	return string(r), nil
+	return getInput(timer, keyDefault)
 }
