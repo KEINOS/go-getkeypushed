@@ -3,7 +3,7 @@ package gkp_test
 import (
 	"testing"
 
-	gkp "github.com/KEINOS/go-getkeypushed"
+	gkp "github.com/KEINOS/go-getkeypushed/src"
 	"github.com/stretchr/testify/assert"
 )
 

@@ -4,7 +4,7 @@ import (
 	"errors"
 	"testing"
 
-	gkp "github.com/KEINOS/go-getkeypushed"
+	gkp "github.com/KEINOS/go-getkeypushed/src"
 	"github.com/mattn/go-tty"
 	"github.com/stretchr/testify/assert"
 )

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	gkp "github.com/KEINOS/go-getkeypushed"
+	gkp "github.com/KEINOS/go-getkeypushed/src"
 )
 
 func main() {
