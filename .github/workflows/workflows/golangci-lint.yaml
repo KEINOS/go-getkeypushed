@@ -3,7 +3,6 @@ name: golangci-lint
 
 on:
   workflow_dispatch:
-  push:
 
 jobs:
   golangci:
@@ -11,8 +10,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Install modules
-        run: go mod tidy
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v2
         with:
