@@ -33,7 +33,7 @@ echo "${@}" | grep -e "-l" -e "--linters" >/dev/null && {
     exit $?
 }
 
-echo -n 'Running golangci-lint ... '
+printf "%s" 'Running golangci-lint ... '
 if ! golangci-lint run --config "$PATH_FILE_CONF_GOLANGCILINT" ./...; then
     echo >&2
     echo >&2 'References for debugging lint error:'

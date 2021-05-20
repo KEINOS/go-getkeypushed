@@ -3,7 +3,9 @@
 
 # Go-GetKeyPushed
 
-**It simply gets one character of the key pushed** from the console (TTY) without entering the `enter` key. Some what like `OnKeyPress()` functionality.
+It simply gets a character of the key pushed from the console/terminal (TTY).
+
+No need to enter the `enter` key. Some what like `OnKeyPress()` functionality. It is very much powered by [`go-tty`](https://github.com/mattn/go-tty/).
 
 ```shellsession
 $ go run ./examples/main.go <enter>
@@ -16,7 +18,8 @@ Key pressed => "あ"
 Key pressed => "い"
 Key pressed => "\x1b" // Up arrow
 Key pressed => "\x1b" // Down arrow
-Empty char(white space) detected. Exiting ...
+Key pressed => "q"
+Quit (q) key detected. Exiting ...
 $
 ```
 
@@ -39,63 +42,28 @@ import (
 
 func main() {
     var (
-        char string
-        err  error
+        timeWait int = 10       // Wait 10 seconds ( 0 = wait for ever)
+        keyDefault string = "q" // Key to use when wait time exceeds
     )
 
     fmt.Println("Ready. Press any key ...")
 
     for {
-        if char, err = gkp.GetKeyPushed(); err != nil {
-            fmt.Fprintf(os.Stderr, "Failed to get key. Msg: %v\n", err)
+        char, err = gkp.GetKeyPushed(keyDefault, timeWait)
+
+        if err != nil {
+            fmt.Fprintf(os.Stderr, "Failed to get key. ErrMsg: %v\n", err)
             os.Exit(1)
         }
 
-        if strings.TrimSpace(char) == "" {
-            fmt.Println("Empty char(white space) detected. Exiting ...")
+        if char == "q" {
+            fmt.Printf("Key pressed => %#+v\n", char)
+            fmt.Println("Quit (q) key detected. Exiting ...")
             break
         }
 
         fmt.Printf("Key pressed => %#+v\n", char)
     }
-}
-```
-
-## Tips For Testing
-
-Since testing the `tty` input is difficult, you can mock the `gkp.GetKeyPushed()` behavior by changing the global variables such as `gkp.DummyMsg` and `gkp.DummyErr`.
-
-If you set any string to `gkp.DummyMsg` then `gkp.GetKeyPushed()` will return that string instead of `tty` input.
-
-```go
-func TestGetKeyPushed_DummyMsg(t *testing.T) {
-    expect := "a"
-
-    gkp.DummyMsg = expect
-
-    defer func() { gkp.DummyMsg = "" }()
-
-    actual, err := gkp.GetKeyPushed()
-    assert.Equal(t, expect, actual)
-    assert.Nil(t, err)
-}
-```
-
-If you set an `error` to `gkp.DummyErr` then `gkp.GetKeyPushed()` will return that error.
-
-```go
-func TestGetKeyPushed_DummyErr(t *testing.T) {
-    expect := "dummy error occurred"
-
-    errDummy := errors.New(expect)
-
-    gkp.DummyErr = errDummy
-
-    defer func() { gkp.DummyErr = nil }()
-
-    msg, err := gkp.GetKeyPushed()
-
-    assert.EqualErrorf(t, err, expect, "error message %s", "mal-formatted")
 }
 ```
 
@@ -108,10 +76,14 @@ func TestGetKeyPushed_DummyErr(t *testing.T) {
 ## License & Copyright
 
 - [MIT](https://github.com/KEINOS/go-getkeypushed/blob/master/LICENSE)
-- Author of [`go-tty`](https://github.com/mattn/go-tty/): Yasuhiro Matsumoto (a.k.a [mattn](https://github.com/mattn/))
-- [KEINOS and the contributors](https://github.com/KEINOS/go-getkeypushed/graphs/contributors)
+  - [KEINOS and the contributors](https://github.com/KEINOS/go-getkeypushed/graphs/contributors)
+  - [`go-tty`](https://github.com/mattn/go-tty/) & [go-isatty](https://github.com/mattn/go-isatty): Yasuhiro Matsumoto (a.k.a [mattn](https://github.com/mattn/)) @ GitHub
+  - [testify](https://github.com/stretchr/testify): [Stretchr](https://github.com/stretchr) @ GitHub
+  - See the packages in [go.mod](./go.mod) as well
 
 ## TODO
 
 - [ ] Find out how to test the `tty` input
-- [x] Implement testing
+- [x] Implement basic testing
+- [x] Wating time implementaion
+  - Wait Nth seconds and return default key if wait time exceed with no user interaction) (Since v2.0)

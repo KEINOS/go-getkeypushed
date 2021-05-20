@@ -4,19 +4,19 @@ import (
 	"errors"
 	"testing"
 
-	gkp "github.com/KEINOS/go-getkeypushed"
+	gkp "github.com/KEINOS/go-getkeypushed/src"
 
 	"github.com/stretchr/testify/assert"
 )
 
-func TestGetKeyPushed_DummyMsg(t *testing.T) {
+func TestGetKeyPushed_DummyKey(t *testing.T) {
 	expect := "a"
 
-	gkp.DummyMsg = expect
+	gkp.DummyKey = expect
 
-	defer func() { gkp.DummyMsg = "" }()
+	defer func() { gkp.DummyKey = "" }()
 
-	actual, err := gkp.GetKeyPushed()
+	actual, err := gkp.GetKeyPushed("q", 5)
 	assert.Equal(t, expect, actual)
 	assert.Nil(t, err)
 }
@@ -30,20 +30,13 @@ func TestGetKeyPushed_DummyErr(t *testing.T) {
 
 	defer func() { gkp.DummyErr = nil }()
 
-	msg, err := gkp.GetKeyPushed()
+	msg, err := gkp.GetKeyPushed("q", 5)
 
-	assert.Equal(
-		t,
-		"",
-		msg,
-		"When DummyErr global variable is not a nil then GetKeyPushed() should be empty('') message.",
-	)
+	assert.Equal(t, "", msg,
+		"When DummyErr global variable is not a nil then GetKeyPushed() should be empty('') message.")
 
-	assert.NotNil(
-		t,
-		err,
-		"When DummyErr global variable is not a nil then GetKeyPushed() should return an error.",
-	)
+	assert.NotNil(t, err,
+		"When DummyErr global variable is not a nil then GetKeyPushed() should return an error.")
 
 	assert.EqualErrorf(t, err, expect, "error message %s", "mal-formatted")
 }
