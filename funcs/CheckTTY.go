@@ -1,4 +1,4 @@
-package gkp
+package funcs
 
 import (
 	"fmt"
@@ -8,7 +8,13 @@ import (
 	"github.com/mattn/go-tty"
 )
 
-func checkTTY(returnChan chan<- string, t *tty.TTY) {
+func CheckTTY(returnChan chan<- string, t *tty.TTY) {
+	if UserInputDummy != "" {
+		returnChan <- strings.TrimSpace(UserInputDummy)
+
+		return
+	}
+
 	r, err := t.ReadRune()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "failed to open TTY in checkTTY().\nErrMsg: %v\n", err)

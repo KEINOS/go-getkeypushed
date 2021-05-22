@@ -1,27 +1,27 @@
-package gkp_test
+package funcs_test
 
 import (
 	"testing"
 
-	gkp "github.com/KEINOS/go-getkeypushed/src"
+	"github.com/KEINOS/go-getkeypushed/funcs"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestIsTTY(t *testing.T) {
-	result := gkp.IsTTY()
+	result := funcs.IsTTY()
 
 	assert.False(t, result, "testing does not have a TTY")
 }
 
 func TestIsTTY_mock_tty(t *testing.T) {
-	OldOsStdoutFd := gkp.DummyIsTTY
+	OldOsStdoutFd := funcs.DummyIsTTY
 	defer func() {
-		gkp.DummyIsTTY = OldOsStdoutFd
+		funcs.DummyIsTTY = OldOsStdoutFd
 	}()
 
-	gkp.DummyIsTTY = true
+	funcs.DummyIsTTY = true
 
-	result := gkp.IsTTY()
+	result := funcs.IsTTY()
 
 	assert.True(t, result)
 }

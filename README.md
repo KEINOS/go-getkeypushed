@@ -33,38 +33,46 @@ go get github.com/KEINOS/go-getkeypushed
 package main
 
 import (
-    "fmt"
-    "os"
-    "strings"
+	"fmt"
+	"os"
+	"strings"
 
-    gkp "github.com/KEINOS/go-getkeypushed"
+	getkbd "github.com/KEINOS/go-getkeypushed"
 )
 
 func main() {
-    var (
-        timeWait int = 10       // Wait 10 seconds ( 0 = wait for ever)
-        keyDefault string = "q" // Key to use when wait time exceeds
-    )
+	var (
+		char       string
+		err        error
+		keyDefault string = "q" // A char to use when wait time exceeds
+		timeWait   int    = 5   // Seconds to wait user input
+	)
 
-    fmt.Println("Ready. Press any key ...")
+	fmt.Println("Ready. Press any key ... (q = quit)")
 
-    for {
-        char, err = gkp.GetKeyPushed(keyDefault, timeWait)
+	for {
+		char, err = getkbd.Pushed(keyDefault, timeWait)
 
-        if err != nil {
-            fmt.Fprintf(os.Stderr, "Failed to get key. ErrMsg: %v\n", err)
-            os.Exit(1)
-        }
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "Failed to get pressed key. Msg: %v\n", err)
+			os.Exit(1)
+		}
 
-        if char == "q" {
-            fmt.Printf("Key pressed => %#+v\n", char)
-            fmt.Println("Quit (q) key detected. Exiting ...")
-            break
-        }
+		if char == "q" {
+			fmt.Printf("Key pressed => %#+v\n", char)
+			fmt.Println("Quit (q) detected. Exiting ...")
+			break
+		}
 
-        fmt.Printf("Key pressed => %#+v\n", char)
-    }
+		if strings.TrimSpace(char) == "" {
+			fmt.Println("Empty char(white space) detected.")
+			break
+		}
+
+		fmt.Printf("Key pressed => %#+v\n", char)
+	}
 }
+
 ```
 
 ## Notes

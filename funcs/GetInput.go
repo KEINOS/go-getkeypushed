@@ -1,4 +1,4 @@
-package gkp
+package funcs
 
 import (
 	"time"
@@ -6,12 +6,16 @@ import (
 	"github.com/mattn/go-tty"
 )
 
-func getInput(timer *time.Timer, keyDefault string) (string, error) {
+func GetInput(timer *time.Timer, keyDefault string) (string, error) {
 	var (
 		t      *tty.TTY
 		result string
 		err    error
 	)
+
+	if UserInputDummy != "" {
+		return UserInputDummy, nil
+	}
 
 	if t, err = OpenTTY(); err != nil {
 		return "", err
@@ -22,16 +26,14 @@ func getInput(timer *time.Timer, keyDefault string) (string, error) {
 	defer close(chanInput)
 
 	for {
-		go checkTime(chanInput, timer, keyDefault)
-		go checkTTY(chanInput, t)
+		go CheckTime(chanInput, timer, keyDefault)
+		go CheckTTY(chanInput, t)
 
 		if inputViaChan := <-chanInput; inputViaChan != "" {
 			result = inputViaChan
 
 			break
 		}
-
-		time.Sleep(1 * time.Second)
 	}
 
 	return result, nil

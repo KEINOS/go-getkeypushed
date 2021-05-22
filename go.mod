@@ -1,4 +1,4 @@
-module github.com/KEINOS/go-getkeypushed/v2
+module github.com/KEINOS/go-getkeypushed
 
 go 1.16
 

@@ -1,4 +1,4 @@
-package gkp
+package funcs
 
 import (
 	"fmt"
