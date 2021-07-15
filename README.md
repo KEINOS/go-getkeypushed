@@ -3,30 +3,65 @@
 
 # Go-GetKeyPushed
 
-It simply gets a character of the key pushed from the console/terminal (TTY).
+This package implements `OnKeyPress()` like functionality to the CLI app powered by [`go-tty`](https://github.com/mattn/go-tty/).
 
-No need to enter the `enter` key. Some what like `OnKeyPress()` functionality. It is very much powered by [`go-tty`](https://github.com/mattn/go-tty/).
+It simply returns the key pushed from the console/terminal (TTY) without the `enter` key. If the 1st arg is positive, then it will wait until its time exceeds and returns the 2nd arg as default.
 
 ```shellsession
-$ go run ./examples/main.go <enter>
-Ready. Press any key ...
+$ # Run sample
+$ go run ./example <enter>
+Ready. Press any key ... (q = quit)
 Key pressed => "a"
 Key pressed => "b"
 Key pressed => "A"
 Key pressed => "B"
 Key pressed => "あ"
 Key pressed => "い"
-Key pressed => "\x1b" // Up arrow
-Key pressed => "\x1b" // Down arrow
+Key pressed => "愛"
+Key pressed => "\x1b"      // ESC key
+Key pressed => "\x1b[A"    // Up arrow key
+Key pressed => "\x1b[B"    // Down arrow key
+Key pressed => "\x1b[C"    // Right arrow key
+Key pressed => "\x1b[D"    // Left arrow key
+Key pressed => "\x1b[19~"  // F8 key (if not assigned in the terminal)
+Key pressed => "\x1b[20~"  // F9 key (if not assigned in the terminal)
+Key pressed => "\x1b[21~"  // F10 key (if not assigned in the terminal)
 Key pressed => "q"
-Quit (q) key detected. Exiting ...
-$
+Quit (q) detected. Exiting ...
+```
+
+```shellsession
+$ # Interrupt with Ctrl+c
+$ go run ./example <enter>
+Ready. Press any key ... (q = quit)
+Key pressed => "a"
+Key pressed => "b"
+keyboard interrupt (tty close: errno 0, signal:interrupt)
+exit status 1
 ```
 
 ## Usage
 
 ```bash
 go get github.com/KEINOS/go-getkeypushed
+```
+
+```go
+// import getkey "github.com/KEINOS/go-getkeypushed"
+
+key := getkey.New()
+
+fmt.Println("Press any key:")
+
+timeWait := 5 // 5 secs to wait
+
+inputUser, err := key.Get(timeWait, "my default")
+if err != nil {
+	fmt.Fprintf(os.Stderr, "Failed to get pressed key. Msg: %v\n", err)
+	os.Exit(1)
+}
+
+fmt.Println("Input: "+ inputUser)
 ```
 
 ```go
@@ -37,21 +72,23 @@ import (
 	"os"
 	"strings"
 
-	getkbd "github.com/KEINOS/go-getkeypushed"
+	getkey "github.com/KEINOS/go-getkeypushed"
 )
 
 func main() {
 	var (
 		char       string
 		err        error
-		keyDefault string = "q" // A char to use when wait time exceeds
-		timeWait   int    = 5   // Seconds to wait user input
+		keyDefault = "q" // A char to use when wait time exceeds
+		timeWait   = 5   // Seconds to wait user input
 	)
+
+	key := getkey.New()
 
 	fmt.Println("Ready. Press any key ... (q = quit)")
 
 	for {
-		char, err = getkbd.Pushed(keyDefault, timeWait)
+		char, err = key.Get(timeWait, keyDefault)
 
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "Failed to get pressed key. Msg: %v\n", err)
@@ -61,11 +98,13 @@ func main() {
 		if char == "q" {
 			fmt.Printf("Key pressed => %#+v\n", char)
 			fmt.Println("Quit (q) detected. Exiting ...")
+
 			break
 		}
 
 		if strings.TrimSpace(char) == "" {
 			fmt.Println("Empty char(white space) detected.")
+
 			break
 		}
 
@@ -77,7 +116,7 @@ func main() {
 
 ## Notes
 
-- Suitable for just getting keypress such as `y`, `n`. But not suitable for capturing keys like `F1` nor `SIGINT` (`Ctrl+C`).
+- Suitable for just getting keypress such as `y`, `n`.
 - It is a wrapper of amazing package "[github.com/mattn/go-tty](https://github.com/mattn/go-tty/)" to simplify its usage for my other projects.
   - [github.com/mattn/go-tty](https://github.com/mattn/go-tty/) @ GitHub
 
@@ -93,5 +132,6 @@ func main() {
 
 - [ ] Find out how to test the `tty` input
 - [x] Implement basic testing
+  - [ ] Cover test as much as possible
 - [x] Wating time implementaion
   - Wait Nth seconds and return default key if wait time exceed with no user interaction) (Since v2.0)
