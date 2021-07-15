@@ -25,28 +25,24 @@
     "go.toolsGopath": "/go/bin",
     "go.toolsManagement.checkForUpdates": "proxy",
     "go.useLanguageServer": true,
-    "terminal.integrated.shell.linux": "/bin/bash",
-    "terminal.integrated.shellArgs.linux": [
-      "-l"
-    ],
     "notebook.experimental.useMarkdownRenderer": "true",
     "shellformat.useEditorConfig": true
   },
   // VSCode extension ID to be installed
   "extensions": [
-    "davidanson.vscode-markdownlint",
-    "editorconfig.editorconfig",
-    "foxundermoon.shell-format",
-    "github.github-vscode-theme",
-    "github.vscode-pull-request-github",
-    "golang.Go",
-    "ms-ceintl.vscode-language-pack-ja",
-    "ms-ceintl.vscode-language-pack-es",
-    "ms-azuretools.vscode-docker",
-    "ms-vsonline.vsonline",
-    "tamasfe.even-better-toml",
-    "znck.grammarly"
-  ],
+	"davidanson.vscode-markdownlint",
+	"editorconfig.editorconfig",
+	"foxundermoon.shell-format",
+	"github.github-vscode-theme",
+	"github.vscode-pull-request-github",
+	"golang.Go",
+	"ms-ceintl.vscode-language-pack-ja",
+	"ms-ceintl.vscode-language-pack-es",
+	"ms-azuretools.vscode-docker",
+	"ms-vsonline.vsonline",
+	"tamasfe.even-better-toml",
+	"github.copilot"
+],
   // Use 'postCreateCommand' to run commands after the container is created.
   "postCreateCommand": "/bin/bash /postCreateCommand.sh;"
   // Uncomment to connect as a non-root user. See https://aka.ms/vscode-remote/containers/non-root.
