@@ -5,32 +5,33 @@ import (
 	"os"
 	"strings"
 
-	getkey "github.com/KEINOS/go-getkeypushed"
+	"github.com/KEINOS/go-getkeypushed/key"
 )
 
 func main() {
 	var (
 		char       string
 		err        error
-		keyDefault = "q" // A char to use when wait time exceeds
+		keyQuit    = "q"
+		keyDefault = "?" // A char to use when wait time exceeds
 		timeWait   = 5   // Seconds to wait user input
 	)
 
-	key := getkey.New()
+	keyInput := key.New()
 
 	fmt.Println("Ready. Press any key ... (q = quit)")
 
 	for {
-		char, err = key.Get(timeWait, keyDefault)
-
+		char, err = keyInput.Get(keyDefault, timeWait)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "Failed to get pressed key. Msg: %v\n", err)
 			os.Exit(1)
 		}
 
-		if char == "q" {
-			fmt.Printf("Key pressed => %#+v\n", char)
-			fmt.Println("Quit (q) detected. Exiting ...")
+		fmt.Printf("Key pressed => %#+v\n", char)
+
+		if char == keyQuit {
+			fmt.Printf("Quit (%s) detected. Exiting ...\n", keyQuit)
 
 			break
 		}
@@ -40,7 +41,5 @@ func main() {
 
 			break
 		}
-
-		fmt.Printf("Key pressed => %#+v\n", char)
 	}
 }

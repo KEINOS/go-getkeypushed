@@ -3,9 +3,9 @@
 
 # Go-GetKeyPushed
 
-This package implements `OnKeyPress()` like functionality to the CLI app powered by [`go-tty`](https://github.com/mattn/go-tty/).
+This package implements `OnKeyPress()` like functionality to the CLI app.
 
-It simply returns the key pushed from the console/terminal (TTY) without the `enter` key. If the 1st arg is positive, then it will wait until its time exceeds and returns the 2nd arg as default.
+It simply returns the key pushed from the console/terminal (TTY) without the `enter` key. If the 1st arg is positive, then it will wait until its time exceeds and returns the 2nd arg as default. It is very much powered by the awesome [`go-tty`](https://github.com/mattn/go-tty/).
 
 ```shellsession
 $ # Run sample
@@ -36,7 +36,7 @@ $ go run ./example <enter>
 Ready. Press any key ... (q = quit)
 Key pressed => "a"
 Key pressed => "b"
-keyboard interrupt (tty close: errno 0, signal:interrupt)
+Failed to get pressed key. Msg: user cancelled (ctrl+c, SIGINT detectd)
 exit status 1
 ```
 
@@ -47,15 +47,15 @@ go get github.com/KEINOS/go-getkeypushed
 ```
 
 ```go
-// import getkey "github.com/KEINOS/go-getkeypushed"
+// import "github.com/KEINOS/go-getkeypushed/key"
 
-key := getkey.New()
+key := key.New() // instantiate
+timeWait := 5 // Timeout user input in 5 secs
+keyDefault := "my default" // Default value
 
 fmt.Println("Press any key:")
 
-timeWait := 5 // 5 secs to wait
-
-inputUser, err := key.Get(timeWait, "my default")
+inputUser, err := key.Get(timeWait, keyDefault)
 if err != nil {
 	fmt.Fprintf(os.Stderr, "Failed to get pressed key. Msg: %v\n", err)
 	os.Exit(1)
@@ -72,32 +72,33 @@ import (
 	"os"
 	"strings"
 
-	getkey "github.com/KEINOS/go-getkeypushed"
+	"github.com/KEINOS/go-getkeypushed/key"
 )
 
 func main() {
 	var (
 		char       string
 		err        error
-		keyDefault = "q" // A char to use when wait time exceeds
+		keyQuit    = "q"
+		keyDefault = "?" // A char to use when wait time exceeds
 		timeWait   = 5   // Seconds to wait user input
 	)
 
-	key := getkey.New()
+	keyInput := key.New()
 
 	fmt.Println("Ready. Press any key ... (q = quit)")
 
 	for {
-		char, err = key.Get(timeWait, keyDefault)
-
+		char, err = keyInput.Get(keyDefault, timeWait)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "Failed to get pressed key. Msg: %v\n", err)
 			os.Exit(1)
 		}
 
-		if char == "q" {
-			fmt.Printf("Key pressed => %#+v\n", char)
-			fmt.Println("Quit (q) detected. Exiting ...")
+		fmt.Printf("Key pressed => %#+v\n", char)
+
+		if char == keyQuit {
+			fmt.Printf("Quit (%s) detected. Exiting ...\n", keyQuit)
 
 			break
 		}
@@ -107,8 +108,6 @@ func main() {
 
 			break
 		}
-
-		fmt.Printf("Key pressed => %#+v\n", char)
 	}
 }
 
@@ -134,4 +133,4 @@ func main() {
 - [x] Implement basic testing
   - [ ] Cover test as much as possible
 - [x] Wating time implementaion
-  - Wait Nth seconds and return default key if wait time exceed with no user interaction) (Since v2.0)
+  - Wait Nth seconds and return default key if wait time exceed with no user interaction)
