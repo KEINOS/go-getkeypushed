@@ -15,16 +15,11 @@
   ],
   // Set VSCode settings
   "settings": {
-    "go.gopath": "/go",
-    "go.goroot": "/usr/local/go",
     "go.lintFlags": [
       "--enable-all",
       "--new"
     ],
-    "go.toolsGopath": "/go/bin",
-    "go.toolsManagement.checkForUpdates": "proxy",
     "go.useLanguageServer": true,
-    "notebook.experimental.useMarkdownRenderer": "true",
     "shellformat.useEditorConfig": true
   },
   // VSCode extension ID to be installed

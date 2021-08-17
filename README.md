@@ -1,5 +1,6 @@
 [![golangci-lint](https://github.com/KEINOS/go-getkeypushed/actions/workflows/golangci-lint.yaml/badge.svg)](https://github.com/KEINOS/go-getkeypushed/actions/workflows/golangci-lint.yaml)
 [![Go Reference](https://pkg.go.dev/badge/github.com/KEINOS/go-getkeypushed.svg)](https://pkg.go.dev/github.com/KEINOS/go-getkeypushed/key "Read generated documentation")
+[![Open in Visual Studio Code](https://open.vscode.dev/badges/open-in-vscode.svg)](https://open.vscode.dev/KEINOS/go-getkeypushed)
 
 # Go-GetKeyPushed
 
@@ -120,16 +121,22 @@ func main() {
 
 ## Notes
 
-- Suitable for just getting keypress such as `y`, `n`.
-- It is a wrapper of amazing package "[github.com/mattn/go-tty](https://github.com/mattn/go-tty/)" to simplify its usage for my other projects.
-  - [github.com/mattn/go-tty](https://github.com/mattn/go-tty/) @ GitHub
+- Develop Online
+  - Compatible to [GitHub Codespaces](https://github.com/features/codespaces).
+  - Fork this repo and open it via CodeSpaces.
+- Develop Locally
+  - No Docker + VSCode user
+    - With [GitHub Codespaces](https://marketplace.visualstudio.com/items?itemName=GitHub.codespaces) extension, [you can remotely access to cloud-hosted dev container](https://docs.github.com/ja/codespaces/developing-in-codespaces/using-codespaces-in-visual-studio-code) in GitHub Cosespaces.
+  - Docker + VSCode user
+    - Compatible to VSCode's [Remote-Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack) extension.
+    - Fork and clone this repo and "Reopen in Container" via Remote-Containers
+    - Or [clone the repo in container volume](vscode://ms-vscode-remote.remote-containers/cloneInVolume?url=https://github.com/KEINOS/go-getkeypushed) for one-time usage.
 
 ## License & Copyright
 
 - [MIT](https://github.com/KEINOS/go-getkeypushed/blob/master/LICENSE)
   - [KEINOS and the contributors](https://github.com/KEINOS/go-getkeypushed/graphs/contributors)
   - [`go-tty`](https://github.com/mattn/go-tty/) & [go-isatty](https://github.com/mattn/go-isatty): Yasuhiro Matsumoto (a.k.a [mattn](https://github.com/mattn/)) @ GitHub
-  - [testify](https://github.com/stretchr/testify): [Stretchr](https://github.com/stretchr) @ GitHub
   - See the packages in [go.mod](./go.mod) as well
 
 ## TODO
