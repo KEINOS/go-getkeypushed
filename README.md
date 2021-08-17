@@ -123,7 +123,7 @@ func main() {
 
 - Develop Online
   - Compatible to [GitHub Codespaces](https://github.com/features/codespaces).
-  - Fork this repo and open it via CodeSpaces.
+  - Fork this repo and open it via CodeSpaces in your repo.
 - Develop Locally
   - No Docker + VSCode user
     - With [GitHub Codespaces](https://marketplace.visualstudio.com/items?itemName=GitHub.codespaces) extension, [you can remotely access to cloud-hosted dev container](https://docs.github.com/ja/codespaces/developing-in-codespaces/using-codespaces-in-visual-studio-code) in GitHub Cosespaces.
