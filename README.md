@@ -1,11 +1,11 @@
 [![golangci-lint](https://github.com/KEINOS/go-getkeypushed/actions/workflows/golangci-lint.yaml/badge.svg)](https://github.com/KEINOS/go-getkeypushed/actions/workflows/golangci-lint.yaml)
-[![Go Reference](https://pkg.go.dev/badge/github.com/KEINOS/go-getkeypushed.svg)](https://pkg.go.dev/github.com/KEINOS/go-getkeypushed#section-documentation "Read generated documentation")
+[![Go Reference](https://pkg.go.dev/badge/github.com/KEINOS/go-getkeypushed.svg)](https://pkg.go.dev/github.com/KEINOS/go-getkeypushed/key "Read generated documentation")
 
 # Go-GetKeyPushed
 
-This package implements `OnKeyPress()` like functionality to the CLI app.
+This package implements `OnKeyPress()` like functionality to the CLI app in Golang. (Very much powered by the awesome [`go-tty`](https://github.com/mattn/go-tty/))
 
-It simply returns the key pushed from the console/terminal (TTY) without the `enter` key. If the 1st arg is positive, then it will wait until its time exceeds and returns the 2nd arg as default. It is very much powered by the awesome [`go-tty`](https://github.com/mattn/go-tty/).
+It simply returns the key pushed from the console/terminal (TTY) without the `enter` key.
 
 ```shellsession
 $ # Run sample
@@ -40,21 +40,26 @@ Failed to get pressed key. Msg: user cancelled (ctrl+c, SIGINT detectd)
 exit status 1
 ```
 
-## Usage
+## Install
 
 ```bash
 go get github.com/KEINOS/go-getkeypushed
 ```
 
+## Usage Sample
+
 ```go
 // import "github.com/KEINOS/go-getkeypushed/key"
 
-key := key.New() // instantiate
-timeWait := 5 // Timeout user input in 5 secs
-keyDefault := "my default" // Default value
+key := key.New() // Instantiate
+
+timeWait := 5              // Timeout user input in 5 secs (0=no timeout)
+keyDefault := "my default" // Default value when timeout
 
 fmt.Println("Press any key:")
 
+// The below returns the key pressed from the console/terminal
+// or returns the default vaule if it timeouts.
 inputUser, err := key.Get(timeWait, keyDefault)
 if err != nil {
 	fmt.Fprintf(os.Stderr, "Failed to get pressed key. Msg: %v\n", err)
