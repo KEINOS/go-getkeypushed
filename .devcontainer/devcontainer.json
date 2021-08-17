@@ -3,16 +3,15 @@
   "build": {
     "dockerfile": "Dockerfile",
     "args": {
-      // Go version: 1, 1.16, 1.15, 1.14
-      "VARIANT": "1.16"
+      // Choice: https://github.com/KEINOS/VSCode-Dev-Container-Go/pkgs/container/vscode-dev-container-go
+      "VARIANT": "latest"
     }
   },
   "runArgs": [
+    "--rm",
     "--cap-add=SYS_PTRACE",
     "--security-opt",
-    "seccomp=unconfined",
-    "-e=LANG",
-    "-e=LC_ALL"
+    "seccomp=unconfined"
   ],
   // Set VSCode settings
   "settings": {
@@ -30,21 +29,18 @@
   },
   // VSCode extension ID to be installed
   "extensions": [
-	"davidanson.vscode-markdownlint",
-	"editorconfig.editorconfig",
-	"foxundermoon.shell-format",
-	"github.github-vscode-theme",
-	"github.vscode-pull-request-github",
-	"golang.Go",
-	"ms-ceintl.vscode-language-pack-ja",
-	"ms-ceintl.vscode-language-pack-es",
-	"ms-azuretools.vscode-docker",
-	"ms-vsonline.vsonline",
-	"tamasfe.even-better-toml",
-	"github.copilot"
-],
-  // Use 'postCreateCommand' to run commands after the container is created.
-  "postCreateCommand": "/bin/bash /postCreateCommand.sh;"
-  // Uncomment to connect as a non-root user. See https://aka.ms/vscode-remote/containers/non-root.
-  //"remoteUser": "vscode"
+    "davidanson.vscode-markdownlint",
+    "editorconfig.editorconfig",
+    "foxundermoon.shell-format",
+    "github.github-vscode-theme",
+    "github.vscode-pull-request-github",
+    "golang.Go",
+    "ms-ceintl.vscode-language-pack-ja",
+    "ms-ceintl.vscode-language-pack-es",
+    "ms-azuretools.vscode-docker",
+    "ms-vsonline.vsonline",
+    "tamasfe.even-better-toml"
+  ]
+  // Uncomment to connect as root user to debug the container
+  //"remoteUser": "root"
 }
