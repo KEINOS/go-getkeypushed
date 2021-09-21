@@ -61,7 +61,7 @@ fmt.Println("Press any key:")
 
 // The below returns the key pressed from the console/terminal
 // or returns the default vaule if it timeouts.
-inputUser, err := key.Get(timeWait, keyDefault)
+inputUser, err := key.Get(keyDefault, timeWait)
 if err != nil {
 	fmt.Fprintf(os.Stderr, "Failed to get pressed key. Msg: %v\n", err)
 	os.Exit(1)
